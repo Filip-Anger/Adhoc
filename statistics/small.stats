@@ -1,0 +1,27 @@
+Cheater Isolation Statistics
+----------------------------
+Total cheatPenalty = 7
+Number of cheaters |Q| = 3
+c_cheat = 10
+Normalized cheating term = 23.333333
+
+Cheat penalty by room:
+Room 0 cheatPenalty = 0
+Room 1 cheatPenalty = 0
+Room 2 cheatPenalty = 0
+Room 3 cheatPenalty = 6
+Room 4 cheatPenalty = 1
+
+Invigilator Statistics
+----------------------
+Raw group splitting cost = 200
+Raw diameter cost = 209.164079
+Raw invigilator cost = 409.164079
+Number of groups G = 6
+Normalized invigilator term = 68.194013
+
+Combined Objective
+------------------
+Cheating term = 23.333333
+Invigilator term = 68.194013
+Total cost F = 91.527346

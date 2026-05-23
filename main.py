@@ -8,7 +8,7 @@ from src.ExamSolution import ExamSolution
 
 def main():
     # Reads data/<dataset>.txt.
-    dataset = "small"
+    dataset = "large"
     if len(sys.argv) >= 2:
         dataset = sys.argv[1]
 
@@ -24,7 +24,22 @@ def main():
     instance = ExamInstance(input_file)
     solution = ExamSolution(instance, random_solution=True)
 
-    # TODO: call your solution here.
+    from src.Seat import Seat
+
+    # Collect all available seats across all rooms in order of room, row, and column.
+    all_seats = []
+    for room in instance.rooms:
+        for row in range(room.getRows()):
+            for col in range(room.getCols()):
+                all_seats.append(Seat(room.getId(), row, col))
+
+    # Seat students group by group sequentially into the available seats.
+    seat_idx = 0
+    for g in range(instance.G):
+        group = instance.groups[g]
+        for student in group.students:
+            solution.seatStudent(student, all_seats[seat_idx])
+            seat_idx += 1
 
     # checkValid checks feasibility, not optimality.
     if not solution.checkValid():
