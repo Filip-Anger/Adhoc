@@ -26,46 +26,85 @@ def main():
 
     from src.Seat import Seat
 
-    # Separate students into cheaters and non-cheaters.
-    # Group cheaters into 4 pattern buckets using (group_id % 4) + 1.
+    # Count cheaters in each group
+    cheater_counts_by_group = {}
+    for student in instance.students:
+        if student.cheater:
+            g = student.group_id
+            cheater_counts_by_group[g] = cheater_counts_by_group.get(g, 0) + 1
+
+    # Sort groups by cheater count descending
+    sorted_cheater_groups = sorted(cheater_counts_by_group.keys(), key=lambda g: cheater_counts_by_group[g], reverse=True)
+
+    # Greedily assign each group to the pattern bucket with the smallest count (LPT Scheduling)
+    # This balances the pattern buckets, making the safety pattern "more compact" and using fewer rows.
+    group_to_pattern = {}
+    bucket_sizes = {1: 0, 2: 0, 3: 0, 4: 0}
+    for g in sorted_cheater_groups:
+        best_bucket = min(bucket_sizes.keys(), key=lambda b: bucket_sizes[b])
+        group_to_pattern[g] = best_bucket
+        bucket_sizes[best_bucket] += cheater_counts_by_group[g]
+
+    # Separate students into cheaters and non-cheaters, assigning cheaters to balanced pattern buckets.
     cheaters_by_pattern = {1: [], 2: [], 3: [], 4: []}
     non_cheaters_by_group = [[] for _ in range(instance.G)]
 
     for student in instance.students:
         if student.cheater:
-            p = (student.group_id % 4) + 1
+            p = group_to_pattern[student.group_id]
             cheaters_by_pattern[p].append(student)
         else:
             non_cheaters_by_group[student.group_id].append(student)
 
-    # Pattern function for cheater placement
+    # Checkerboard safety pattern index function
     def get_pattern_group(row, col):
         if row % 2 == 0:
             return 1 if col % 2 == 0 else 2
         else:
             return 3 if col % 2 == 0 else 4
 
-    # Seat cheaters in the first rooms using the pattern.
-    last_cheater_room = -1
-    for r_idx, room in enumerate(instance.rooms):
-        for row in range(room.getRows()):
+    # Sort rooms by capacity descending
+    sorted_rooms = sorted(instance.rooms, key=lambda r: r.getCapacity(), reverse=True)
+
+    # Determine cheater row allocations dynamically for each room
+    room_cheater_rows = {}
+    for room in sorted_rooms:
+        H_c = 0
+        initial_counts = {p: len(cheaters_by_pattern[p]) for p in [1, 2, 3, 4]}
+        
+        while H_c < room.getRows():
+            if all(initial_counts[p] == 0 for p in [1, 2, 3, 4]):
+                break
+                
+            H_c += 1
+            cap = {1: 0, 2: 0, 3: 0, 4: 0}
+            for r_offset in range(H_c):
+                for col in range(room.getCols()):
+                    p = get_pattern_group(r_offset, col)
+                    cap[p] += 1
+                    
+            if all(cap[p] >= initial_counts[p] for p in [1, 2, 3, 4]):
+                for p in [1, 2, 3, 4]:
+                    initial_counts[p] = 0
+                break
+                
+        room_cheater_rows[room.getId()] = H_c
+        
+        # Place cheaters in the first H_c rows
+        for row in range(H_c):
             for col in range(room.getCols()):
                 p = get_pattern_group(row, col)
                 if len(cheaters_by_pattern[p]) > 0:
                     student = cheaters_by_pattern[p].pop(0)
                     solution.seatStudent(student, Seat(room.getId(), row, col))
 
-        # Check if all cheaters are seated
-        if all(len(cheaters_by_pattern[p]) == 0 for p in [1, 2, 3, 4]):
-            last_cheater_room = r_idx
-            break
-
-    if last_cheater_room == -1:
-        raise ValueError("Not enough room capacity or incorrect pattern distribution to seat all cheaters.")
+    # Check if any cheaters are left
+    if any(len(cheaters_by_pattern[p]) > 0 for p in [1, 2, 3, 4]):
+        raise ValueError("Not enough room capacity for cheaters.")
 
     import math
 
-    # Sort non-cheater groups by size descending
+    # Non-cheaters pre-assignment
     non_cheaters_groups = []
     for g in range(instance.G):
         non_cheaters_groups.append({
@@ -75,43 +114,42 @@ def main():
         })
     non_cheaters_groups.sort(key=lambda x: x["size"], reverse=True)
 
-    # We use the rooms from last_cheater_room + 1 onwards for non-cheaters.
-    remaining_rooms = instance.rooms[last_cheater_room + 1:]
+    # Determine if we should use buffer rows between cheaters and non-cheaters.
+    # If using buffer rows exceeds the total remaining capacity, we disable them to keep the solution valid.
+    total_non_cheaters = sum(g["size"] for g in non_cheaters_groups)
+    total_cap_with_buffer = 0
+    for r in sorted_rooms:
+        H_c = room_cheater_rows[r.getId()]
+        start_row = H_c + 1 if H_c > 0 else 0
+        avail_rows = max(0, r.getRows() - start_row)
+        total_cap_with_buffer += avail_rows * r.getCols()
+        
+    use_buffer = (total_cap_with_buffer >= total_non_cheaters)
 
-    # Track room assignments and remaining capacities
-    room_assignments = {r.getId(): [] for r in remaining_rooms}
-    room_capacities = {r.getId(): r.getCapacity() for r in remaining_rooms}
+    room_assignments = {r.getId(): [] for r in sorted_rooms}
+    room_capacities = {}
+    for r in sorted_rooms:
+        H_c = room_cheater_rows[r.getId()]
+        start_row = H_c + 1 if (H_c > 0 and use_buffer) else H_c
+        avail_rows = max(0, r.getRows() - start_row)
+        room_capacities[r.getId()] = avail_rows * r.getCols()
 
-    # Threshold for "very small group" or leftovers
-    SMALL_THRESHOLD = 15
-    leftovers_and_small_groups = []
-
+    # Greedy Best-Fit assignment of non-cheaters
     for g_info in non_cheaters_groups:
         students_to_assign = list(g_info["students"])
-
+        
         while len(students_to_assign) > 0:
-            if len(students_to_assign) <= SMALL_THRESHOLD:
-                leftovers_and_small_groups.append({
-                    "group_id": g_info["group_id"],
-                    "students": students_to_assign,
-                    "size": len(students_to_assign)
-                })
-                students_to_assign = []
-                break
-
-            # Try Best-Fit for large chunk to minimize empty seats
             target_room = None
             min_waste = float("inf")
-            for r in remaining_rooms:
+            for r in sorted_rooms:
                 cap = room_capacities[r.getId()]
                 if cap >= len(students_to_assign):
                     waste = cap - len(students_to_assign)
                     if waste < min_waste:
                         min_waste = waste
                         target_room = r
-
+                        
             if target_room is not None:
-                # Assign the remaining students to this room
                 room_assignments[target_room.getId()].append({
                     "group_id": g_info["group_id"],
                     "students": students_to_assign,
@@ -120,13 +158,11 @@ def main():
                 room_capacities[target_room.getId()] -= len(students_to_assign)
                 students_to_assign = []
             else:
-                # The remaining students do not fit in any single room, so we must split.
-                # Find the room with the largest remaining capacity > 0
-                largest_room = max(remaining_rooms, key=lambda r: room_capacities[r.getId()])
+                largest_room = max(sorted_rooms, key=lambda r: room_capacities[r.getId()])
                 space = room_capacities[largest_room.getId()]
                 if space == 0:
                     raise ValueError("No capacity left in any room for non-cheaters!")
-
+                    
                 chunk = students_to_assign[:space]
                 room_assignments[largest_room.getId()].append({
                     "group_id": g_info["group_id"],
@@ -136,85 +172,130 @@ def main():
                 room_capacities[largest_room.getId()] -= len(chunk)
                 students_to_assign = students_to_assign[space:]
 
-    # Sort leftovers and small groups by size descending before placing
-    leftovers_and_small_groups.sort(key=lambda x: x["size"], reverse=True)
+    # Helper function to pack a strip of height H
+    def pack_strip(groups, H, C):
+        selected = []
+        width_sum = 0
+        for g in groups:
+            w_min = (g["size"] + H - 1) // H
+            if max(H, w_min) > 2 * min(H, w_min):
+                continue
+            if width_sum + w_min <= C:
+                selected.append(g)
+                width_sum += w_min
+            else:
+                break
+                
+        if not selected:
+            return None, None
+            
+        extra = C - width_sum
+        widths = [(g["size"] + H - 1) // H for g in selected]
+        
+        for i in range(len(selected)):
+            max_w = 2 * H
+            add = min(extra, max_w - widths[i])
+            widths[i] += add
+            extra -= add
+            if extra == 0:
+                break
+                
+        if extra > 0:
+            return None, None
+            
+        return selected, widths
 
-    # Assign leftovers and small groups using optimal squaring
-    for item in leftovers_and_small_groups:
-        K = item["size"]
-        S = math.ceil(math.sqrt(K))
+    overflow_students = []
 
-        best_room = None
-        min_dist = float("inf")
-        best_waste = float("inf")
-
-        for r in remaining_rooms:
-            cap = room_capacities[r.getId()]
-            if cap >= K:
-                # Find distance to closest wall
-                dist = min(abs(r.getRows() - S), abs(r.getCols() - S))
-                waste = cap - K
-                if dist < min_dist:
-                    min_dist = dist
-                    best_room = r
-                    best_waste = waste
-                elif dist == min_dist:
-                    # Tie-breaker: minimize waste
-                    if waste < best_waste:
-                        best_room = r
-                        best_waste = waste
-
-        if best_room is None:
-            raise ValueError("Not enough capacity in remaining rooms for small groups/leftovers.")
-
-        room_assignments[best_room.getId()].append(item)
-        room_capacities[best_room.getId()] -= K
-
-    # Seat the students room by room based on assignments
-    for r in remaining_rooms:
+    # Seat the non-cheaters room by room using strip packing
+    for r in sorted_rooms:
         room_id = r.getId()
         R = r.getRows()
         C = r.getCols()
+        H_c = room_cheater_rows[room_id]
+        start_row = H_c + 1 if (H_c > 0 and use_buffer) else H_c
+        
         groups_in_room = room_assignments[room_id]
         if not groups_in_room:
             continue
+            
+        groups_in_room.sort(key=lambda x: x["size"], reverse=True)
+        
+        remaining_groups = list(groups_in_room)
+        current_row = start_row
+        
+        while remaining_groups and current_row < R:
+            g_largest = remaining_groups[0]
+            S = math.ceil(math.sqrt(g_largest["size"]))
+            H = min(S, R - current_row)
+            if H == 0:
+                break
+                
+            selected_groups, widths = pack_strip(remaining_groups, H, C)
+            
+            if selected_groups is not None:
+                col_start = 0
+                for g, w in zip(selected_groups, widths):
+                    block_seats = []
+                    for r_offset in range(H):
+                        for c_offset in range(w):
+                            if len(block_seats) < g["size"]:
+                                block_seats.append(Seat(room_id, current_row + r_offset, col_start + c_offset))
+                    for student, seat in zip(g["students"], block_seats):
+                        solution.seatStudent(student, seat)
+                    col_start += w
+                    remaining_groups.remove(g)
+                current_row += H
+            else:
+                # Fallback to sequential placement in remaining space of this room
+                avail_seats = [Seat(room_id, row, col) for row in range(current_row, R) for col in range(C)]
+                for g in list(remaining_groups):
+                    for student in g["students"]:
+                        if avail_seats:
+                            solution.seatStudent(student, avail_seats.pop(0))
+                        else:
+                            overflow_students.append(student)
+                    remaining_groups.remove(g)
+                break
+                
+        # Place any remaining groups that could not fit in strips
+        if remaining_groups:
+            taken_seats_in_room = set()
+            for s_id in range(instance.N):
+                seat = solution.seating[s_id]
+                if seat.room_id == room_id:
+                    taken_seats_in_room.add((seat.row, seat.col))
+            avail_seats = []
+            for row in range(start_row, R):
+                for col in range(C):
+                    if (row, col) not in taken_seats_in_room:
+                        avail_seats.append(Seat(room_id, row, col))
+            for g in remaining_groups:
+                for student in g["students"]:
+                    if avail_seats:
+                        solution.seatStudent(student, avail_seats.pop(0))
+                    else:
+                        overflow_students.append(student)
 
-        all_room_seats = [Seat(room_id, row, col) for row in range(R) for col in range(C)]
-
-        # First group in the room gets block shape if the room starts empty
-        first_group = groups_in_room[0]
-        K = first_group["size"]
-
-        W_rect = C
-        H_rect = (K + C - 1) // C
-        b_rect = max(H_rect, W_rect)
-        a_rect = min(H_rect, W_rect)
-
-        if H_rect <= R and b_rect <= 2 * a_rect:
-            H, W = H_rect, W_rect
-        else:
-            S = math.ceil(math.sqrt(K))
-            H = min(S, R)
-            W = min(S, C)
-            if H * W < K:
-                if H < S:
-                    W = (K + H - 1) // H
-                elif W < S:
-                    H = (K + W - 1) // W
-
-        first_group_seats = [Seat(room_id, row, col) for row in range(H) for col in range(W)][:K]
-        for student, seat in zip(first_group["students"], first_group_seats):
-            solution.seatStudent(student, seat)
-
-        # Remaining seats in the room
-        remaining_room_seats = [s for s in all_room_seats if s not in first_group_seats]
-
-        # Place subsequent groups in the remaining seats
-        seat_idx = 0
-        for other_group in groups_in_room[1:]:
-            for student in other_group["students"]:
-                solution.seatStudent(student, remaining_room_seats[seat_idx])
-                seat_idx += 1
+    # Place overflow students in any remaining empty seats across all rooms
+    if overflow_students:
+        taken_seats_global = set()
+        for s_id in range(instance.N):
+            seat = solution.seating[s_id]
+            if seat.room_id != -1:
+                taken_seats_global.add((seat.room_id, seat.row, seat.col))
+                
+        avail_seats_global = []
+        for r in sorted_rooms:
+            H_c = room_cheater_rows[r.getId()]
+            start_row = H_c + 1 if (H_c > 0 and use_buffer) else H_c
+            for row in range(start_row, r.getRows()):
+                for col in range(r.getCols()):
+                    if (r.getId(), row, col) not in taken_seats_global:
+                        avail_seats_global.append(Seat(r.getId(), row, col))
+                        
+        for student in overflow_students:
+            solution.seatStudent(student, avail_seats_global.pop(0))
 
     # checkValid checks feasibility, not optimality.
     if not solution.checkValid():
