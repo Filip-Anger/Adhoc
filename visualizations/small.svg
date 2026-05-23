@@ -47,9 +47,7 @@ text { font-family: Arial, sans-serif; fill: #000000; }
 <rect x="114" y="558" width="64" height="64" fill="#FFADAD" stroke="#777777" stroke-width="1"/>
 <text x="146" y="583" text-anchor="middle" class="seat-student">S4</text>
 <text x="146" y="602" text-anchor="middle" class="seat-info">G0</text>
-<rect x="178" y="558" width="64" height="64" fill="#A0C4FF" stroke="#777777" stroke-width="1"/>
-<text x="210" y="583" text-anchor="middle" class="seat-student">S28</text>
-<text x="210" y="602" text-anchor="middle" class="seat-info">G5</text>
+<rect x="178" y="558" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
 <rect x="32" y="682" width="228" height="208" rx="12" ry="12" class="room-card"/>
 <text x="50" y="712" class="room-title">Room 2 (2x3)</text>
 <rect x="50" y="744" width="64" height="64" fill="#FDFFB6" stroke="#777777" stroke-width="1"/>
@@ -58,71 +56,73 @@ text { font-family: Arial, sans-serif; fill: #000000; }
 <rect x="114" y="744" width="64" height="64" fill="#FDFFB6" stroke="#777777" stroke-width="1"/>
 <text x="146" y="769" text-anchor="middle" class="seat-student">S12</text>
 <text x="146" y="788" text-anchor="middle" class="seat-info">G2</text>
-<rect x="178" y="744" width="64" height="64" fill="#9BF6FF" stroke="#777777" stroke-width="1"/>
-<text x="210" y="769" text-anchor="middle" class="seat-student">S23</text>
-<text x="210" y="788" text-anchor="middle" class="seat-info">G4</text>
+<rect x="178" y="744" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
 <rect x="50" y="808" width="64" height="64" fill="#FDFFB6" stroke="#777777" stroke-width="1"/>
 <text x="82" y="833" text-anchor="middle" class="seat-student">S13</text>
 <text x="82" y="852" text-anchor="middle" class="seat-info">G2</text>
 <rect x="114" y="808" width="64" height="64" fill="#FDFFB6" stroke="#777777" stroke-width="1"/>
 <text x="146" y="833" text-anchor="middle" class="seat-student">S14</text>
 <text x="146" y="852" text-anchor="middle" class="seat-info">G2</text>
-<rect x="178" y="808" width="64" height="64" fill="#9BF6FF" stroke="#777777" stroke-width="1"/>
-<text x="210" y="833" text-anchor="middle" class="seat-student">S24</text>
-<text x="210" y="852" text-anchor="middle" class="seat-info">G4</text>
+<rect x="178" y="808" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
 <rect x="32" y="932" width="228" height="272" rx="12" ry="12" class="room-card"/>
 <text x="50" y="962" class="room-title">Room 3 (3x3)</text>
 <rect x="50" y="994" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
-<text x="82" y="1019" text-anchor="middle" class="seat-student">S19</text>
+<text x="82" y="1019" text-anchor="middle" class="seat-student">S15</text>
 <text x="82" y="1038" text-anchor="middle" class="seat-info">G3</text>
-<rect x="53" y="997" width="58" height="58" fill="none" stroke="#000000" stroke-width="6"/>
-<rect x="58" y="1002" width="48" height="48" fill="none" stroke="#ffffff" stroke-width="2"/>
-<circle cx="64" cy="1008" r="10" fill="#ffffff" stroke="#000000" stroke-width="2"/>
-<text x="64" y="1012" text-anchor="middle" class="cheater-label">C</text>
-<rect x="114" y="994" width="64" height="64" fill="#9BF6FF" stroke="#777777" stroke-width="1"/>
-<text x="146" y="1019" text-anchor="middle" class="seat-student">S25</text>
-<text x="146" y="1038" text-anchor="middle" class="seat-info">G4</text>
-<rect x="117" y="997" width="58" height="58" fill="none" stroke="#000000" stroke-width="6"/>
-<rect x="122" y="1002" width="48" height="48" fill="none" stroke="#ffffff" stroke-width="2"/>
-<circle cx="128" cy="1008" r="10" fill="#ffffff" stroke="#000000" stroke-width="2"/>
-<text x="128" y="1012" text-anchor="middle" class="cheater-label">C</text>
-<rect x="178" y="994" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
-<rect x="50" y="1058" width="64" height="64" fill="#A0C4FF" stroke="#777777" stroke-width="1"/>
-<text x="82" y="1083" text-anchor="middle" class="seat-student">S27</text>
-<text x="82" y="1102" text-anchor="middle" class="seat-info">G5</text>
-<rect x="53" y="1061" width="58" height="58" fill="none" stroke="#000000" stroke-width="6"/>
-<rect x="58" y="1066" width="48" height="48" fill="none" stroke="#ffffff" stroke-width="2"/>
-<circle cx="64" cy="1072" r="10" fill="#ffffff" stroke="#000000" stroke-width="2"/>
-<text x="64" y="1076" text-anchor="middle" class="cheater-label">C</text>
-<rect x="114" y="1058" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
-<rect x="178" y="1058" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
-<rect x="50" y="1122" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
-<rect x="114" y="1122" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
+<rect x="114" y="994" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
+<text x="146" y="1019" text-anchor="middle" class="seat-student">S16</text>
+<text x="146" y="1038" text-anchor="middle" class="seat-info">G3</text>
+<rect x="178" y="994" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
+<text x="210" y="1019" text-anchor="middle" class="seat-student">S17</text>
+<text x="210" y="1038" text-anchor="middle" class="seat-info">G3</text>
+<rect x="50" y="1058" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
+<text x="82" y="1083" text-anchor="middle" class="seat-student">S18</text>
+<text x="82" y="1102" text-anchor="middle" class="seat-info">G3</text>
+<rect x="114" y="1058" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
+<text x="146" y="1083" text-anchor="middle" class="seat-student">S20</text>
+<text x="146" y="1102" text-anchor="middle" class="seat-info">G3</text>
+<rect x="178" y="1058" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
+<text x="210" y="1083" text-anchor="middle" class="seat-student">S21</text>
+<text x="210" y="1102" text-anchor="middle" class="seat-info">G3</text>
+<rect x="50" y="1122" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
+<text x="82" y="1147" text-anchor="middle" class="seat-student">S22</text>
+<text x="82" y="1166" text-anchor="middle" class="seat-info">G3</text>
+<rect x="114" y="1122" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
+<text x="146" y="1147" text-anchor="middle" class="seat-student">S19</text>
+<text x="146" y="1166" text-anchor="middle" class="seat-info">G3</text>
+<rect x="117" y="1125" width="58" height="58" fill="none" stroke="#000000" stroke-width="6"/>
+<rect x="122" y="1130" width="48" height="48" fill="none" stroke="#ffffff" stroke-width="2"/>
+<circle cx="128" cy="1136" r="10" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+<text x="128" y="1140" text-anchor="middle" class="cheater-label">C</text>
 <rect x="178" y="1122" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
 <rect x="32" y="1246" width="292" height="208" rx="12" ry="12" class="room-card"/>
 <text x="50" y="1276" class="room-title">Room 4 (2x4)</text>
-<rect x="50" y="1308" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
-<text x="82" y="1333" text-anchor="middle" class="seat-student">S15</text>
-<text x="82" y="1352" text-anchor="middle" class="seat-info">G3</text>
-<rect x="114" y="1308" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
-<text x="146" y="1333" text-anchor="middle" class="seat-student">S16</text>
-<text x="146" y="1352" text-anchor="middle" class="seat-info">G3</text>
-<rect x="178" y="1308" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
-<text x="210" y="1333" text-anchor="middle" class="seat-student">S17</text>
-<text x="210" y="1352" text-anchor="middle" class="seat-info">G3</text>
-<rect x="242" y="1308" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
-<text x="274" y="1333" text-anchor="middle" class="seat-student">S18</text>
-<text x="274" y="1352" text-anchor="middle" class="seat-info">G3</text>
-<rect x="50" y="1372" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
-<text x="82" y="1397" text-anchor="middle" class="seat-student">S20</text>
-<text x="82" y="1416" text-anchor="middle" class="seat-info">G3</text>
-<rect x="114" y="1372" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
-<text x="146" y="1397" text-anchor="middle" class="seat-student">S21</text>
-<text x="146" y="1416" text-anchor="middle" class="seat-info">G3</text>
-<rect x="178" y="1372" width="64" height="64" fill="#CAFFBF" stroke="#777777" stroke-width="1"/>
-<text x="210" y="1397" text-anchor="middle" class="seat-student">S22</text>
-<text x="210" y="1416" text-anchor="middle" class="seat-info">G3</text>
-<rect x="242" y="1372" width="64" height="64" fill="#A0C4FF" stroke="#777777" stroke-width="1"/>
-<text x="274" y="1397" text-anchor="middle" class="seat-student">S26</text>
-<text x="274" y="1416" text-anchor="middle" class="seat-info">G5</text>
+<rect x="50" y="1308" width="64" height="64" fill="#9BF6FF" stroke="#777777" stroke-width="1"/>
+<text x="82" y="1333" text-anchor="middle" class="seat-student">S23</text>
+<text x="82" y="1352" text-anchor="middle" class="seat-info">G4</text>
+<rect x="114" y="1308" width="64" height="64" fill="#9BF6FF" stroke="#777777" stroke-width="1"/>
+<text x="146" y="1333" text-anchor="middle" class="seat-student">S24</text>
+<text x="146" y="1352" text-anchor="middle" class="seat-info">G4</text>
+<rect x="178" y="1308" width="64" height="64" fill="#A0C4FF" stroke="#777777" stroke-width="1"/>
+<text x="210" y="1333" text-anchor="middle" class="seat-student">S26</text>
+<text x="210" y="1352" text-anchor="middle" class="seat-info">G5</text>
+<rect x="242" y="1308" width="64" height="64" fill="#A0C4FF" stroke="#777777" stroke-width="1"/>
+<text x="274" y="1333" text-anchor="middle" class="seat-student">S28</text>
+<text x="274" y="1352" text-anchor="middle" class="seat-info">G5</text>
+<rect x="50" y="1372" width="64" height="64" fill="#A0C4FF" stroke="#777777" stroke-width="1"/>
+<text x="82" y="1397" text-anchor="middle" class="seat-student">S27</text>
+<text x="82" y="1416" text-anchor="middle" class="seat-info">G5</text>
+<rect x="53" y="1375" width="58" height="58" fill="none" stroke="#000000" stroke-width="6"/>
+<rect x="58" y="1380" width="48" height="48" fill="none" stroke="#ffffff" stroke-width="2"/>
+<circle cx="64" cy="1386" r="10" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+<text x="64" y="1390" text-anchor="middle" class="cheater-label">C</text>
+<rect x="114" y="1372" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
+<rect x="178" y="1372" width="64" height="64" fill="#fafafa" stroke="#cfcfcf" stroke-width="1"/>
+<rect x="242" y="1372" width="64" height="64" fill="#9BF6FF" stroke="#777777" stroke-width="1"/>
+<text x="274" y="1397" text-anchor="middle" class="seat-student">S25</text>
+<text x="274" y="1416" text-anchor="middle" class="seat-info">G4</text>
+<rect x="245" y="1375" width="58" height="58" fill="none" stroke="#000000" stroke-width="6"/>
+<rect x="250" y="1380" width="48" height="48" fill="none" stroke="#ffffff" stroke-width="2"/>
+<circle cx="256" cy="1386" r="10" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+<text x="256" y="1390" text-anchor="middle" class="cheater-label">C</text>
 </svg>

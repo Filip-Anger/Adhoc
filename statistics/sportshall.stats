@@ -11,13 +11,13 @@ Room 0 cheatPenalty = 0
 Invigilator Statistics
 ----------------------
 Raw group splitting cost = 0
-Raw diameter cost = 1525.321754
-Raw invigilator cost = 1525.321754
+Raw diameter cost = 910.859836
+Raw invigilator cost = 910.859836
 Number of groups G = 10
-Normalized invigilator term = 152.532175
+Normalized invigilator term = 91.085984
 
 Combined Objective
 ------------------
 Cheating term = 0
-Invigilator term = 152.532175
-Total cost F = 152.532175
+Invigilator term = 91.085984
+Total cost F = 91.085984
